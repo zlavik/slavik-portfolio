@@ -139,7 +139,7 @@ const Contact = () => {
         setCountdown(remainingTime);
       }
     }
-  }, []);
+  }, [COOLDOWN_TIME]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
