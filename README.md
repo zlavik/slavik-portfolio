@@ -1,50 +1,47 @@
-# React + TypeScript + Vite
+# Modern React Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sophisticated, responsive portfolio website built with React, TypeScript, and Emotion CSS. Features dark/light theme switching, smooth animations, and a modern design aesthetic.
 
-Currently, two official plugins are available:
+## 🌟 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Responsive Design**: Fully responsive layout that works seamlessly across all devices
+- **Dark/Light Theme**: Dynamic theme switching with smooth transitions
+- **Interactive UI**: Engaging animations using Framer Motion
+- **Blog System**: Integrated blog functionality with markdown support
+- **Contact Form**: Email.js integration for a functional contact form
+- **Modern Stack**: Built with React 18, TypeScript, and Emotion CSS
+- **Interactive Duck**: Custom SVG animation with eye-tracking and confetti effects
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 18
+- TypeScript
+- Emotion (Styled Components)
+- Framer Motion
+- React Router v6
+- Email.js
+- Canvas Confetti
+- React Icons
 
-- Configure the top-level `parserOptions` property like this:
+## 📱 Pages
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Home**: Interactive landing page with animated duck mascot
+- **About**: Detailed professional background and skills
+- **Portfolio**: Showcase of projects with animations
+- **Blog**: Technical blog with detailed articles
+- **Contact**: Professional contact form with email integration
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🎨 Design Features
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Custom theme system with dark/light mode
+- Smooth page transitions
+- Responsive navigation with mobile menu
+- Custom scrollbars
+- Interactive hover effects
+- Professional typography
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## 🚀 Getting Started
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/portfolio-website.git
