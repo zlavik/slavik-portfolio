@@ -45,3 +45,52 @@ A sophisticated, responsive portfolio website built with React, TypeScript, and 
 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/portfolio-website.git
+
+2. Install dependencies
+```bash
+npm install
+
+
+3. Start the development server
+```bash
+npm run dev
+
+## 💻 Development
+
+The project structure follows a clean, modular architecture:
+
+```text
+src/
+  ├── components/        # Reusable UI components
+  │   ├── Footer.tsx
+  │   ├── Navbar.tsx 
+  │   ├── Section.tsx
+  │   └── ThemeToggle.tsx
+  ├── pages/            # Main page components
+  │   ├── About.tsx
+  │   ├── Blog.tsx
+  │   ├── BlogPost.tsx
+  │   ├── Contact.tsx
+  │   ├── Home.tsx
+  │   └── Portfolio.tsx
+  ├── styles/           # Theme and global styles
+  │   └── theme.ts
+  ├── data/            # Content data
+  │   └── blogPosts.ts
+  └── types/           # TypeScript definitions
+      └── emotion.d.ts
+
+## 🌐 Deployment
+
+Ready for deployment on platforms like:
+- Vercel
+- Netlify  
+- GitHub Pages
+
+## 📄 License
+
+MIT License - feel free to use this for your own portfolio!
+
+## 🤝 Contributing
+
+Contributions welcome! Feel free to submit issues and pull requests.

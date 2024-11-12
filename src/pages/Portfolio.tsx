@@ -73,24 +73,19 @@ const TechTag = styled.span`
 const Portfolio = () => {
   const projects = [
     {
-      title: "Cirium Data Pipeline Optimization",
-      description: "Led optimization of data pipelines processing 200M+ daily events, improving aviation analytics efficiency by 40%.",
-      tech: ["Python", "AWS", "PySpark", "PostgreSQL"],
-      image: "/cirium-project.jpg"
+      title: "Modern React Portfolio",
+      description: "Built a dynamic portfolio website featuring dark/light theme switching, interactive animations, and a technical blog system. Implements modern React patterns and responsive design.",
+      tech: ["React", "TypeScript", "Emotion CSS", "Framer Motion"],
+      image: "/portfolio-site.jpg"
     },
     {
-      title: "Healthcare AI Platform",
-      description: "Developed HIPAA-compliant healthcare platform with integrated AI for patient care management.",
-      tech: ["React", "Node.js", "TensorFlow", "AWS"],
-      image: "/healthcare-ai.jpg"
-    },
-    {
-      title: "FIRST Robotics Mentorship",
-      description: "Mentored young developers in coding best practices and collaborative development.",
-      tech: ["Python", "Java", "Git", "Agile"],
-      image: "/robotics-mentor.jpg"
+      title: "AdhSkillD - Gamified Skill Development Platform",
+      description: "Built an interactive skill development platform that transforms learning into an engaging journey. Features dynamic skill trees, achievement systems, and real-time progress tracking. Implements advanced React patterns, custom animations, and secure user authentication.",
+      tech: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Zustand", "React Flow"],
+      image: "/adhskilld.jpg"  // You'll need to add your project screenshot
     }
-  ];
+];
+
   return (
     <PortfolioContainer>
       <Section title="Portfolio">
