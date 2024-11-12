@@ -5,6 +5,26 @@ import { useTheme } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 
+const HomeContainer = styled.div`
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${props => props.theme.colors.background};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.secondary};
+    border-radius: 4px;
+  }
+`;
+
 const HomePage = styled.div`
   min-height: calc(100vh - 140px);
   padding: 80px 2rem 0;
@@ -16,6 +36,7 @@ const HomePage = styled.div`
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-y: auto;
 `;
 
 const Hero = styled(motion.div)`
@@ -78,6 +99,7 @@ const HeroText = styled(motion.p)`
 const CTAContainer = styled(motion.div)`
   display: flex;
   gap: 1rem;
+  margin-bottom: 3rem; // This creates nice spacing above the footer
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     justify-content: center;
   }
@@ -231,6 +253,7 @@ const Home = () => {
     }
   };
   return (
+    <HomeContainer>
     <HomePage>
       <Hero>
         <HeroContent>
@@ -282,6 +305,8 @@ const Home = () => {
         </HeroImage>
       </Hero>
     </HomePage>
+    </HomeContainer>
+
   );
 };
 export default Home;
