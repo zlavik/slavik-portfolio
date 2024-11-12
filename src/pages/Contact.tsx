@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
@@ -37,7 +37,7 @@ const ContactForm = styled(motion.form)`
   gap: 1.5rem;
   max-width: 500px;
   width: 100%;
-  background: white;
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.secondary : props.theme.colors.primary};
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -51,7 +51,7 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
   font-size: 1rem;
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.secondary};
   font-weight: 600;
 `;
 const Input = styled.input`
@@ -61,7 +61,7 @@ const Input = styled.input`
   font-size: 1rem;
   transition: border-color 0.3s ease;
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
-  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.text : props.theme.colors.lightText};
   border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
   &:focus {
@@ -79,7 +79,7 @@ const TextArea = styled.textarea`
   resize: vertical;
   transition: border-color 0.3s ease;
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
-  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.text : props.theme.colors.lightText};
   border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
   &:focus {
@@ -88,21 +88,23 @@ const TextArea = styled.textarea`
   }
 `;
 
-const SubmitButton = styled(motion.button)`
+const SubmitButton = styled(motion.button)<{ $isActive: boolean }>`
   padding: 1rem 2rem;
   background-color: ${props => props.theme.colors.secondary};
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.1rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  cursor: ${props => props.$isActive ? 'pointer' : 'not-allowed'};
+  transition: all 0.3s ease;
+  box-shadow: ${props => props.$isActive ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none'};
 
   &:hover {
-    background-color: ${props => props.theme.colors.accent};
+    transform: ${props => props.$isActive ? 'translateY(-2px)' : 'none'};
+    box-shadow: ${props => props.$isActive ? '0 6px 16px rgba(0, 0, 0, 0.2)' : 'none'};
   }
-`;
+`
 
 const StatusMessage = styled(motion.div)`
   padding: 1rem;
@@ -124,6 +126,36 @@ const StatusMessage = styled(motion.div)`
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState('');
+  const [countdown, setCountdown] = useState<number>(0);
+  const COOLDOWN_TIME = 5 * 60; // 5 minutes in seconds
+
+  useEffect(() => {
+    // Check localStorage on component mount
+    const lastSubmitTime = localStorage.getItem('lastSubmitTime');
+    if (lastSubmitTime) {
+      const timePassed = Math.floor((Date.now() - parseInt(lastSubmitTime)) / 1000);
+      const remainingTime = COOLDOWN_TIME - timePassed;
+      if (remainingTime > 0) {
+        setCountdown(remainingTime);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,14 +170,15 @@ const Contact = () => {
       )
         .then(() => {
           setStatus('success');
+          localStorage.setItem('lastSubmitTime', Date.now().toString());
+          setCountdown(COOLDOWN_TIME);
           form.current?.reset();
         })
         .catch(() => {
           setStatus('error');
         });
     }
-};
-
+  };
 
   return (
     <ContactPage>
@@ -193,11 +226,13 @@ const Contact = () => {
 
         <SubmitButton 
           type="submit"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          disabled={status === 'sending'}
+          whileHover={{ scale: countdown > 0 ? 1 : 1.02 }}
+          whileTap={{ scale: countdown > 0 ? 1 : 0.98 }}
+          disabled={countdown > 0 || status === 'sending'}
+          $isActive={countdown === 0}
         >
-          {status === 'sending' ? 'Sending...' : 'Send Message'}
+          {status === 'sending' ? 'Sending...' : 
+           countdown > 0 ? `Wait ${formatTime(countdown)}` : 'Send Message'}
         </SubmitButton>
 
         {status === 'success' && (
@@ -219,9 +254,18 @@ const Contact = () => {
             Something went wrong. Please try again.
           </StatusMessage>
         )}
+
+        {status === 'cooldown' && (
+          <StatusMessage 
+            className="error"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            Please wait 5 minutes before sending another message
+          </StatusMessage>
+        )}
       </ContactForm>
     </ContactPage>
   );
 };
-
-export default Contact;
+;export default Contact;
