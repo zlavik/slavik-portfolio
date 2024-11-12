@@ -2,45 +2,45 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
-  const FooterContainer = styled(motion.footer)`
-    background-color: ${props => props.theme.colors.primary};
+const FooterContainer = styled(motion.footer)`
+  background-color: ${props => `${props.theme.colors.primary}CC`}; // Added transparency
+  backdrop-filter: blur(5px);
+  color: ${props => props.theme.colors.white};
+  padding: 0.5rem;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+`;
+
+const FooterContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const FooterText = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  a {
     color: ${props => props.theme.colors.white};
-    padding: 1rem;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-  `;
-
-  const FooterContent = styled.div`
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  `;
-
-  const FooterText = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  `;
-
-  const SocialLinks = styled.div`
-    display: flex;
-    gap: 1rem;
+    font-size: 1rem;
+    transition: ${props => props.theme.transitions.default};
   
-    a {
-      color: ${props => props.theme.colors.white};
-      font-size: 1.2rem;
-      transition: ${props => props.theme.transitions.default};
-    
-      &:hover {
-        color: ${props => props.theme.colors.accent};
-      }
+    &:hover {
+      color: ${props => props.theme.colors.accent};
     }
-  `;
-
-  const Footer = () => {
+  }
+`;  const Footer = () => {
     return (
       <FooterContainer
         initial={{ opacity: 0, y: 20 }}

@@ -10,8 +10,9 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
   padding: 1rem 2rem;
-  background: ${props => props.theme.colors.white};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: ${props => props.theme.colors.white}CC;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.38);
   z-index: 1000;
 `;
 
@@ -73,11 +74,26 @@ const NavLink = styled(Link)`
 const ThemeToggle = styled(motion.button)`
   background: none;
   border: none;
+  
   color: ${props => props.theme.colors.text};
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0.5rem;
   margin-left: 2rem;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: rotate(15deg);
+    background: ${props => props.theme.colors.primary};
+  }
+  &:focus {
+    outline: none;
+  }
 `;
 
 const MobileMenuButton = styled.button`
