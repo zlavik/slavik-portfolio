@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import Section from '../components/Section';
+import { Link } from 'react-router-dom';
 
 const PortfolioContainer = styled.div`
   padding: 80px 0 0;
@@ -28,33 +29,37 @@ const ProjectGrid = styled.div`
   gap: 2rem;
 `;
 
-const ProjectCard = styled(motion.div)`
-  background: ${props => props.theme.colors.white};
+const ProjectsCard = styled(motion.article)`
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
-
+const ProjectCard = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+`;
 const ProjectImage = styled.div`
   height: 200px;
-  background-color: ${props => props.theme.colors.secondary};
   background-size: cover;
   background-position: center;
 `;
 
 const ProjectContent = styled.div`
   padding: 1.5rem;
+  transition: color 0.3s ease;
 
   h3 {
-    color: ${props => props.theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
     margin-bottom: 0.5rem;
   }
 
   p {
     margin-bottom: 1rem;
+    color: inherit;
   }
 `;
-
 const TechStack = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -92,28 +97,28 @@ const Portfolio = () => {
       <Section title="Portfolio">
         <ProjectGrid>
           {projects.map((project, index) => (
-            <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-              <ProjectCard
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-                whileHover={{ y: -10 }}
-              >
-                <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
-                <ProjectContent>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <TechStack>
-                    {project.tech.map((tech, i) => (
-                      <TechTag key={i}>{tech}</TechTag>
-                    ))}
-                  </TechStack>
-                </ProjectContent>
+            <ProjectsCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+              whileHover={{ y: -5 }}
+            >
+              <ProjectCard to={project.link}>
+              <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
+              <ProjectContent>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <TechStack>
+                  {project.tech.map((tech, i) => (
+                    <TechTag key={i}>{tech}</TechTag>
+                  ))}
+                </TechStack>
+              </ProjectContent>
               </ProjectCard>
-            </a>
-          ))}
-        </ProjectGrid>
+              
+            </ProjectsCard>
+          ))}        </ProjectGrid>
       </Section>
     </PortfolioContainer>
   );

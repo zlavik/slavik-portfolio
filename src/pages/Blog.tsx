@@ -59,7 +59,6 @@ const BlogMeta = styled.div`
   margin-bottom: 1rem;
 `;
 
-
 const BlogCard = styled(Link)`
   text-decoration: none;
   color: inherit;
