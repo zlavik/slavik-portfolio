@@ -8,6 +8,9 @@ const AboutContainer = styled.div`
   padding: 80px 0 60px; // Adjusted to account for fixed footer
   height: calc(100vh - 140px); // Subtracting nav and footer heights
   overflow-y: auto;
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+
   /* Custom scrollbar styling */
   &::-webkit-scrollbar {
     width: 8px;

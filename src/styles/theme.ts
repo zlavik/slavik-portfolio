@@ -3,6 +3,7 @@ interface Theme {
     light: ColorScheme;
     dark: ColorScheme;
   };
+  mode: 'light' | 'dark';
   breakpoints: {
     mobile: string;
     tablet: string;
@@ -24,19 +25,23 @@ interface ColorScheme {
   darkGray: string;
   inputBackground: string;
   inputText: string;
+  darkBackground: string;
+  lightText: string;
 }
 
 const lightColors = {
-  primary: '#2D3047',
-  secondary: '#419D78',
-  accent: '#E0A458',
-  background: '#FAFAFA',
-  text: '#2D3047',
-  white: '#FFFFFF',
-  lightGray: '#F5F5F5',
-  darkGray: '#4A4A4A',
-  inputBackground: '#FFFFFF',
-  inputText: '#2D3047',
+  primary: '#456789',      // Softer blue-gray
+  secondary: '#5499c7',    // Muted blue
+  accent: '#f39c12',       // Warmer orange
+  background: '#f8f9fb',   // Slightly warmer white
+  text: '#394b59',         // Softer dark blue for text
+  white: '#ffffff',
+  lightGray: '#f0f3f5',    // Warmer light gray
+  darkGray: '#95a5a6',     // Softer dark gray
+  inputBackground: '#f8f9fb', // Matching background
+  inputText: '#394b59',    // Matching text color
+  darkBackground: '#ffffff',
+  lightText: '#394b59'
 }
 
 const darkColors = {
@@ -50,6 +55,8 @@ const darkColors = {
   darkGray: '#CCCCCC',
   inputBackground: '#2D3047',
   inputText: '#FFFFFF',
+  darkBackground: '#1a1a1a',
+  lightText: '#e0e0e0'
 }
 
 export const theme = {
@@ -66,4 +73,5 @@ export const theme = {
     default: '0.3s ease-in-out',
   },
 };
+
 export type { Theme };

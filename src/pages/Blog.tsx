@@ -7,7 +7,8 @@ const BlogContainer = styled.div`
   padding: 80px 0 0;
   height: calc(100vh - 140px);
   overflow-y: auto;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
   
   &::-webkit-scrollbar {
     width: 8px;

@@ -9,7 +9,9 @@ const ContactPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 const ContactHeader = styled(motion.div)`
@@ -58,8 +60,9 @@ const Input = styled.input`
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
-  background-color: ${props => props.theme.colors.white};
-  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
   &:focus {
     outline: none;
@@ -75,8 +78,9 @@ const TextArea = styled.textarea`
   min-height: 150px;
   resize: vertical;
   transition: border-color 0.3s ease;
-  background-color: ${props => props.theme.colors.white};
-  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
   &:focus {
     outline: none;
@@ -118,27 +122,30 @@ const StatusMessage = styled(motion.div)`
 `;
 
 const Contact = () => {
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState('');
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
 
-    emailjs.sendForm(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      form.current,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    )
-      .then(() => {
-        setStatus('success');
-        form.current.reset();
-      })
-      .catch(() => {
-        setStatus('error');
-      });
-  };
+    if (form.current) {
+      emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        form.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+        .then(() => {
+          setStatus('success');
+          form.current?.reset();
+        })
+        .catch(() => {
+          setStatus('error');
+        });
+    }
+};
+
 
   return (
     <ContactPage>
