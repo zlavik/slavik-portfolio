@@ -57,7 +57,8 @@ const Hero = styled(motion.div)`
 const HeroContent = styled.div`
   order: 1;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    order: 2;
+    order: 1;
+    width: 100%;
   }
 `;
 
@@ -69,8 +70,7 @@ const HeroImage = styled(motion.div)`
   overflow: hidden;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    order: 1;
-    height: 300px;
+    display: none; // This will hide the face scene on mobile
   }
 `;
 
