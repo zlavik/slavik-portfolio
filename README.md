@@ -49,12 +49,12 @@ git clone https://github.com/yourusername/portfolio-website.git
 2. Install dependencies
 ```bash
 npm install
-
+```
 
 3. Start the development server
 ```bash
 npm run dev
-
+```
 ## 💻 Development
 
 The project structure follows a clean, modular architecture:
@@ -79,7 +79,7 @@ src/
   │   └── blogPosts.ts
   └── types/           # TypeScript definitions
       └── emotion.d.ts
-
+```
 ## 🌐 Deployment
 
 Ready for deployment on platforms like:
