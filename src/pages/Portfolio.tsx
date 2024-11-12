@@ -76,39 +76,42 @@ const Portfolio = () => {
       title: "Modern React Portfolio",
       description: "Built a dynamic portfolio website featuring dark/light theme switching, interactive animations, and a technical blog system. Implements modern React patterns and responsive design.",
       tech: ["React", "TypeScript", "Emotion CSS", "Framer Motion"],
-      image: "/portfolio-site.jpg"
+      image: "/portfolio-site.jpg",
+      link: "https://github.com/zlavik/slavik-portfolio"
     },
     {
       title: "AdhSkillD - Gamified Skill Development Platform",
       description: "Built an interactive skill development platform that transforms learning into an engaging journey. Features dynamic skill trees, achievement systems, and real-time progress tracking. Implements advanced React patterns, custom animations, and secure user authentication.",
       tech: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Zustand", "React Flow"],
-      image: "/adhskilld.jpg"  // You'll need to add your project screenshot
+      image: "/adhskilld.jpg",
+      link: "https://github.com/zlavik/adhskilld"
     }
 ];
-
   return (
     <PortfolioContainer>
       <Section title="Portfolio">
         <ProjectGrid>
           {projects.map((project, index) => (
-            <ProjectCard
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
-            >
-              <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
-              <ProjectContent>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <TechStack>
-                  {project.tech.map((tech, i) => (
-                    <TechTag key={i}>{tech}</TechTag>
-                  ))}
-                </TechStack>
-              </ProjectContent>
-            </ProjectCard>
+            <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+              <ProjectCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -10 }}
+              >
+                <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
+                <ProjectContent>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <TechStack>
+                    {project.tech.map((tech, i) => (
+                      <TechTag key={i}>{tech}</TechTag>
+                    ))}
+                  </TechStack>
+                </ProjectContent>
+              </ProjectCard>
+            </a>
           ))}
         </ProjectGrid>
       </Section>
