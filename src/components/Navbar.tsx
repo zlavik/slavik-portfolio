@@ -116,6 +116,14 @@ const ThemeToggle = styled(motion.button)`
   &:focus {
     outline: none;
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-left: 0;
+    padding: 0.25rem;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
 `;
 
 const MobileMenuButton = styled.button`
@@ -128,13 +136,18 @@ const MobileMenuButton = styled.button`
   padding: 0.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-left: 0.5rem;
+    padding: 0.25rem;
   }
   &:focus {
     outline: none;
   }
 `;
-
 const MobileMenu = styled(motion.div)`
   display: none;
   position: fixed;

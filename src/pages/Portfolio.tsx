@@ -4,7 +4,7 @@ import Section from '../components/Section';
 import { useState } from 'react';
 
 const PortfolioContainer = styled.div`
-  padding: 80px 0 0;
+  padding: 80px 0 2rem;
   height: calc(100vh - 140px);
   overflow-y: auto;
   background-color: ${props => props.theme.colors.white};

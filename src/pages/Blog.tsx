@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Section from '../components/Section';
 
 const BlogContainer = styled.div`
-  padding: 80px 0 0;
+  padding: 80px 0 2rem;
   height: calc(100vh - 140px);
   overflow-y: auto;
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};

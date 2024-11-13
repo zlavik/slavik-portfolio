@@ -10,15 +10,16 @@ const BlogPostContainer = styled.div`
   overflow-y: auto;
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
-  
+  max-width: 100%; // Ensure the container doesn't exceed the viewport width
+
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: ${props => props.theme.colors.background};
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: ${props => props.theme.colors.secondary};
     border-radius: 4px;
@@ -28,7 +29,7 @@ const BlogPostContainer = styled.div`
 
 const BlogHeader = styled.div`
   margin-bottom: 3rem;
-  text-align: left;
+  text-align: center;
   
   p {
     color: ${props => props.theme.colors.darkGray};
@@ -39,7 +40,9 @@ const BlogHeader = styled.div`
 const BlogContent = styled.div`
   line-height: 1.8;
   text-align: left;
-  
+  overflow-wrap: break-word; // Ensure long words break to fit the screen
+  word-wrap: break-word; // Support for older browsers
+
   h2 {
     margin: 2.5rem 0 1rem;
     color: ${props => props.theme.colors.primary};
@@ -57,13 +60,13 @@ const BlogContent = styled.div`
     border-radius: 8px;
     display: block;
     margin: 1.5rem 0;
-    white-space: pre-wrap;
+    white-space: pre-wrap; // Ensure code blocks wrap within the screen
     font-size: 0.9rem;
     font-family: 'Fira Code', monospace;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto; // Allow horizontal scrolling for code blocks if necessary
   }
 `;
-
 const BlogPost = () => {
   const { slug } = useParams();
   const post = slug && blogPosts[slug as keyof typeof blogPosts];
