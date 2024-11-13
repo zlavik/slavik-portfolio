@@ -9,14 +9,33 @@ const ContactPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${props => props.theme.colors.background};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.secondary};
+    border-radius: 4px;
+  }
   transition: background-color 0.3s ease, color 0.3s ease;
 `;
-
+const ContactGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
 const ContactHeader = styled(motion.div)`
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  max-width: 500px;
+  width: 100%;
 `;
 
 const Title = styled.h1`
@@ -27,7 +46,7 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   font-size: 1.2rem;
-  color: ${props => props.theme.colors.darkGray};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.text : props.theme.colors.lightText};
   max-width: 600px;
 `;
 
@@ -37,7 +56,7 @@ const ContactForm = styled(motion.form)`
   gap: 1.5rem;
   max-width: 500px;
   width: 100%;
-  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.secondary : props.theme.colors.primary};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.primary};
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -51,7 +70,7 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
   font-size: 1rem;
-  color: ${props => props.theme.colors.secondary};
+  color: ${props => props.theme.colors.white};
   font-weight: 600;
 `;
 const Input = styled.input`
@@ -60,7 +79,7 @@ const Input = styled.input`
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
-  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.text : props.theme.colors.lightText};
   border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
@@ -78,7 +97,7 @@ const TextArea = styled.textarea`
   min-height: 150px;
   resize: vertical;
   transition: border-color 0.3s ease;
-  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.text : props.theme.colors.lightText};
   border-color: ${props => props.theme.mode === 'dark' ? '#404040' : props.theme.colors.lightGray};
 
@@ -91,6 +110,7 @@ const TextArea = styled.textarea`
 const SubmitButton = styled(motion.button)<{ $isActive: boolean }>`
   padding: 1rem 2rem;
   background-color: ${props => props.theme.colors.secondary};
+
   color: white;
   border: none;
   border-radius: 12px;
@@ -182,89 +202,94 @@ const Contact = () => {
 
   return (
     <ContactPage>
-      <ContactHeader
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <Title>Let's Connect</Title>
-        <Subtitle>Have a question or want to work together? Drop me a message!</Subtitle>
-      </ContactHeader>
-
-      <ContactForm 
-        ref={form} 
-        onSubmit={sendEmail}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <InputGroup>
-          <Label>Name</Label>
-          <Input 
-            type="text" 
-            name="user_name" 
-            required 
-          />
-        </InputGroup>
-
-        <InputGroup>
-          <Label>Email</Label>
-          <Input 
-            type="email" 
-            name="user_email" 
-            required 
-          />
-        </InputGroup>
-
-        <InputGroup>
-          <Label>Message</Label>
-          <TextArea 
-            name="message" 
-            required 
-          />
-        </InputGroup>
-
-        <SubmitButton 
-          type="submit"
-          whileHover={{ scale: countdown > 0 ? 1 : 1.02 }}
-          whileTap={{ scale: countdown > 0 ? 1 : 0.98 }}
-          disabled={countdown > 0 || status === 'sending'}
-          $isActive={countdown === 0}
+      <ContactGrid>
+        <ContactHeader
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          {status === 'sending' ? 'Sending...' : 
-           countdown > 0 ? `Wait ${formatTime(countdown)}` : 'Send Message'}
-        </SubmitButton>
+          <Title>Let's Connect</Title>
+          <Subtitle>Have a question or want to work together? <br/> Drop me a message!</Subtitle>
+          
+        </ContactHeader>
 
-        {status === 'success' && (
-          <StatusMessage 
-            className="success"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Message sent successfully!
-          </StatusMessage>
-        )}
-        
-        {status === 'error' && (
-          <StatusMessage 
-            className="error"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Something went wrong. Please try again.
-          </StatusMessage>
-        )}
+        <ContactForm 
+          ref={form} 
+          onSubmit={sendEmail}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          
+          <InputGroup>
+            <Label>Name</Label>
+            <Input 
+              type="text" 
+              name="user_name" 
+              required 
+            />
+          </InputGroup>
 
-        {status === 'cooldown' && (
-          <StatusMessage 
-            className="error"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          <InputGroup>
+            <Label>Email</Label>
+            <Input 
+              type="email" 
+              name="user_email" 
+              required 
+            />
+          </InputGroup>
+
+          <InputGroup>
+            <Label>Message</Label>
+            <TextArea 
+              name="message" 
+              required 
+            />
+          </InputGroup>
+
+          <SubmitButton 
+            type="submit"
+            whileHover={{ scale: countdown > 0 ? 1 : 1.02 }}
+            whileTap={{ scale: countdown > 0 ? 1 : 0.98 }}
+            disabled={countdown > 0 || status === 'sending'}
+            $isActive={countdown === 0}
           >
-            Please wait 5 minutes before sending another message
-          </StatusMessage>
-        )}
-      </ContactForm>
+            {status === 'sending' ? 'Sending...' : 
+            countdown > 0 ? `Wait ${formatTime(countdown)}` : 'Send Message'}
+          </SubmitButton>
+
+          {status === 'success' && (
+            <StatusMessage 
+              className="success"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              Message sent successfully!
+            </StatusMessage>
+          )}
+          
+          {status === 'error' && (
+            <StatusMessage 
+              className="error"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              Something went wrong. Please try again.
+            </StatusMessage>
+          )}
+
+          {status === 'cooldown' && (
+            <StatusMessage 
+              className="error"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              Please wait 5 minutes before sending another message
+            </StatusMessage>
+          )}
+        </ContactForm>
+      </ContactGrid>
+
     </ContactPage>
   );
 };

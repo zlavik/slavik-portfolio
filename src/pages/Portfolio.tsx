@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import Section from '../components/Section';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const PortfolioContainer = styled.div`
   padding: 80px 0 0;
@@ -33,92 +33,184 @@ const ProjectsCard = styled(motion.article)`
   background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
 `;
-const ProjectCard = styled(Link)`
+
+const ProjectCard = styled.div`
   text-decoration: none;
   color: inherit;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    color: ${props => props.theme.colors.text};
+
+  }
 `;
+
 const ProjectImage = styled.div`
   height: 200px;
   background-size: cover;
   background-position: center;
+  transition: transform 0.3s ease;
+  
+  ${ProjectCard}:hover & {
+    transform: scale(1.05);
+  }
 `;
 
 const ProjectContent = styled.div`
   padding: 1.5rem;
-  transition: color 0.3s ease;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   h3 {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+
     margin-bottom: 0.5rem;
+    font-size: 1.4rem;
   }
 
   p {
     margin-bottom: 1rem;
-    color: inherit;
+    color: ${({ theme }) => theme.colors.text};
+    line-height: 1.6;
   }
 `;
+
 const TechStack = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin: 1rem 0;
 `;
 
 const TechTag = styled.span`
-  background: ${props => props.theme.colors.background};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.lightText};
   padding: 0.25rem 0.75rem;
   border-radius: 15px;
   font-size: 0.875rem;
-  color: ${props => props.theme.colors.text};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkGray : props.theme.colors.white};
+
 `;
 
-const Portfolio = () => {
-  const projects = [
-    {
-      title: "Modern React Portfolio",
-      description: "Built a dynamic portfolio website featuring dark/light theme switching, interactive animations, and a technical blog system. Implements modern React patterns and responsive design.",
-      tech: ["React", "TypeScript", "Emotion CSS", "Framer Motion"],
-      image: "/portfolio-site.jpg",
-      link: "https://github.com/zlavik/slavik-portfolio"
-    },
-    {
-      title: "AdhSkillD - Gamified Skill Development Platform",
-      description: "Built an interactive skill development platform that transforms learning into an engaging journey. Features dynamic skill trees, achievement systems, and real-time progress tracking. Implements advanced React patterns, custom animations, and secure user authentication.",
-      tech: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Zustand", "React Flow"],
-      image: "/adhskilld.jpg",
-      link: "https://github.com/zlavik/adhskilld"
-    }
+const CTAButton = styled(motion.button)`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: auto;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.secondary};
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+`;
+const LiveButton = styled(motion.button)`
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: auto;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.secondary : props.theme.colors.primary};
+  }
+`;
+
+const ProjectDescription = styled.div`
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+`;
+const projects = [
+  {
+    title: "Modern React Portfolio",
+    description: "Built a dynamic portfolio website featuring dark/light theme switching, interactive animations, and a technical blog system. Implements modern React patterns and responsive design. Features a secure contact form with EmailJS integration and spam prevention through a 5-minute cooldown system.",
+    tech: ["React", "TypeScript", "Emotion CSS", "Framer Motion", "EmailJS"],
+    image: "/portfolio-site.jpg",
+    gitHubLink: "https://github.com/zlavik/slavik-portfolio",
+    liveLink: "https://www.slavikferris.com/",
+    isLive: true
+  },
+  {
+    title: "AdhSkillD - Gamified Skill Development Platform",
+    description: "Built an interactive skill development platform that transforms learning into an engaging journey. Features dynamic skill trees, achievement systems, and real-time progress tracking.",
+    tech: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Zustand", "React Flow"],
+    image: "/adhskilld.jpg",
+    gitHubLink: "https://github.com/zlavik/adhskilld",
+    liveLink: "",
+    isLive: false
+  }
 ];
+const Portfolio = () => {
+  const [buttonTexts, setButtonTexts] = useState<{ [key: number]: string }>(
+    projects.reduce((acc, _, index) => ({ ...acc, [index]: 'View Live Page →' }), {})
+  );
+
   return (
     <PortfolioContainer>
-      <Section title="Portfolio">
+      <Section title="Featured Projects">
         <ProjectGrid>
           {projects.map((project, index) => (
-            <ProjectsCard
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
-            >
-              <ProjectCard to={project.link}>
-              <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
-              <ProjectContent>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <TechStack>
-                  {project.tech.map((tech, i) => (
-                    <TechTag key={i}>{tech}</TechTag>
-                  ))}
-                </TechStack>
-              </ProjectContent>
-              </ProjectCard>
-              
-            </ProjectsCard>
-          ))}        </ProjectGrid>
+              <ProjectsCard key={index}>
+                <ProjectCard>
+                  <ProjectImage style={{ backgroundImage: `url(${project.image})` }} />
+                  <ProjectContent>
+                    <h3>{project.title}</h3>
+                    <ProjectDescription>
+                      {project.description}<br />
+                    </ProjectDescription>
+                    <TechStack>
+                      {project.tech.map((tech, i) => (
+                        <TechTag key={i}>{tech}</TechTag>
+                      ))}
+                    </TechStack>
+                    <ButtonContainer>
+                      <CTAButton onClick={() => window.open(project.gitHubLink, '_blank')}>
+                        View Github Page →
+                      </CTAButton>
+                      <LiveButton
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => {
+                          if (project.isLive) {
+                            window.open(project.liveLink, '_blank');
+                          } else {
+                            setButtonTexts(prev => ({ ...prev, [index]: 'Coming Soon →' }));
+                          }
+                        }}
+                      >
+                        {buttonTexts[index]}
+                      </LiveButton>
+                    </ButtonContainer>
+                  </ProjectContent>
+                </ProjectCard>
+              </ProjectsCard>
+          ))}        
+        </ProjectGrid>
       </Section>
     </PortfolioContainer>
   );

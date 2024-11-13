@@ -30,16 +30,16 @@ interface ColorScheme {
 }
 
 const lightColors = {
-  primary: '#456789',      // Softer blue-gray
-  secondary: '#5499c7',    // Muted blue
-  accent: '#f39c12',       // Warmer orange
-  background: '#f8f9fb',   // Slightly warmer white
-  text: '#394b59',         // Softer dark blue for text
+  primary: '#456789',      
+  secondary: '#5499c7',    
+  accent: '#f39c12',       
+  background: '#f8f9fb',   
+  text: '#394b59',        
   white: '#ffffff',
-  lightGray: '#f0f3f5',    // Warmer light gray
-  darkGray: '#95a5a6',     // Softer dark gray
-  inputBackground: '#f8f9fb', // Matching background
-  inputText: '#394b59',    // Matching text color
+  lightGray: '#f0f3f5',    
+  darkGray: '#95a5a6',     
+  inputBackground: '#f8f9fb', 
+  inputText: '#394b59',    
   darkBackground: '#ffffff',
   lightText: '#394b59'
 }

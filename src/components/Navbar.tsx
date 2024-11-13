@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,8 +12,12 @@ const Nav = styled.nav`
   padding: 1rem 2rem;
   background: ${props => props.theme.colors.white}CC;
   backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.38);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
   z-index: 1000;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const NavContainer = styled.div`
@@ -30,6 +34,10 @@ const Logo = styled(Link)`
   font-weight: bold;
   color: ${props => props.theme.colors.primary};
   text-decoration: none;
+  &:focus {
+    outline: none;
+    color: ${props => props.theme.colors.primary};
+  }
 `;
 
 const NavLinks = styled.div`
@@ -68,6 +76,20 @@ const NavLink = styled(Link)`
 
   &:hover:after {
     transform: scaleX(1);
+  }
+  &:last-child:hover {
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+    border-radius: 5px;
+  }
+  &:last-child {
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+
+  }
+  &:hover {
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+  }
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -108,6 +130,9 @@ const MobileMenuButton = styled.button`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
   }
+  &:focus {
+    outline: none;
+  }
 `;
 
 const MobileMenu = styled(motion.div)`
@@ -131,9 +156,29 @@ const MobileNavLinks = styled.div`
   gap: 1rem;
 `;
 
+
+
 const Navbar = ({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current && 
+        buttonRef.current && 
+        !menuRef.current.contains(event.target as Node) && 
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -141,7 +186,13 @@ const Navbar = ({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => v
     <Nav>
       <NavContainer>
         <Logo to="/">
-          <motion.span whileHover={{ scale: 1.05 }}>Slavik Ferris</motion.span>
+          <motion.span 
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, scale: 1.05 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            Slavik
+          </motion.span>
         </Logo>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <NavLinks>
@@ -154,13 +205,14 @@ const Navbar = ({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => v
           <ThemeToggle onClick={toggleTheme}>
             {isDark ? <FaSun /> : <FaMoon />}
           </ThemeToggle>
-          <MobileMenuButton onClick={toggleMenu}>
+          <MobileMenuButton ref={buttonRef} onClick={toggleMenu}>
             {isOpen ? <FaTimes /> : <FaBars />}
           </MobileMenuButton>
         </div>
       </NavContainer>
       {isOpen && (
         <MobileMenu
+          ref={menuRef}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}

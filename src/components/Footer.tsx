@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const FooterContainer = styled(motion.footer)`
-  background-color: ${props => `${props.theme.colors.primary}CC`}; // Added transparency
+  background-color: ${props => `${props.theme.colors.primary}CC`}; 
   backdrop-filter: blur(5px);
   color: ${props => props.theme.colors.white};
   padding: 0.5rem;
@@ -18,6 +18,11 @@ const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2rem; // Add horizontal padding
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0 1rem; // Slightly less padding on mobile
+  }
 `;
 
 const FooterText = styled.div`
@@ -40,29 +45,31 @@ const SocialLinks = styled.div`
       color: ${props => props.theme.colors.accent};
     }
   }
-`;  const Footer = () => {
-    return (
-      <FooterContainer
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <FooterContent>
-          <FooterText>
-            <span>Slavik Ferris</span>
-            <span>•</span>
-            <span>Software Engineer</span>
-          </FooterText>
-          <SocialLinks>
-            <a href="https://github.com/zlavik" target="_blank" rel="noopener noreferrer">
-              <FaGithub />
-            </a>
-            <a href="https://linkedin.com/in/slavik-ferris" target="_blank" rel="noopener noreferrer">
-              <FaLinkedin />
-            </a>
-          </SocialLinks>
-        </FooterContent>
-      </FooterContainer>
-    );
-  };
+`;
+const Footer = () => {
+  return (
+    <FooterContainer
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      style={{ opacity: 0 }}  // Set initial style
+    >
+      <FooterContent>
+        <FooterText>
+          <span>Slavik Ferris</span>
+          <span>•</span>
+          <span>Software Engineer</span>
+        </FooterText>
+        <SocialLinks>
+          <a href="https://github.com/zlavik" target="_blank" rel="noopener noreferrer">
+            <FaGithub />
+          </a>
+          <a href="https://linkedin.com/in/slavik-ferris" target="_blank" rel="noopener noreferrer">
+            <FaLinkedin />
+          </a>
+        </SocialLinks>
+      </FooterContent>
+    </FooterContainer>
+  );
+};
 export default Footer;

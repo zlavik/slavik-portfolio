@@ -5,9 +5,25 @@ import { blogPosts } from '../data/blogPosts';
 
 const BlogPostContainer = styled.div`
   padding: 80px 20px 40px;
-  max-width: 800px;
   margin: 0 auto;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
+  color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
   
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${props => props.theme.colors.background};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.secondary};
+    border-radius: 4px;
+  }
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 const BlogHeader = styled.div`

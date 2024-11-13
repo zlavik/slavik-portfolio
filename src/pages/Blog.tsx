@@ -7,7 +7,7 @@ const BlogContainer = styled.div`
   padding: 80px 0 0;
   height: calc(100vh - 140px);
   overflow-y: auto;
-  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.darkBackground : props.theme.colors.white};
+  background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.lightText : props.theme.colors.text};
   
   &::-webkit-scrollbar {
@@ -22,6 +22,8 @@ const BlogContainer = styled.div`
     background: ${props => props.theme.colors.secondary};
     border-radius: 4px;
   }
+  transition: background-color 0.3s ease, color 0.3s ease;
+
 `;
 
 const BlogGrid = styled.div`
@@ -34,13 +36,38 @@ const BlogPost = styled(motion.article)`
   background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+  }
+  
+  p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+`;
+const BlogCard = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  &:hover {
+    color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
+  }
+`;
 const BlogImage = styled.div`
   height: 200px;
   background-size: cover;
   background-position: center;
+  ${BlogCard}:hover & {
+    transform: scale(1.05);
+  }
 `;
 
 const BlogContent = styled.div`
@@ -59,11 +86,7 @@ const BlogMeta = styled.div`
   margin-bottom: 1rem;
 `;
 
-const BlogCard = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-`;
+
 
 const Blog = () => {
   const blogPosts = [
@@ -105,7 +128,6 @@ const Blog = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
             >
               <BlogCard to={`/blog/${post.slug}`}>
                 <BlogImage style={{ backgroundImage: `url(${post.image})` }} />
