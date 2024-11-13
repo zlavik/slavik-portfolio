@@ -205,20 +205,20 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <Link to="/portfolio" style={{ width: '100%' }}>
-              <PrimaryButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                See My Projects →
-              </PrimaryButton>
-            </Link>
-            <Link to="/about" style={{ width: '100%' }}>
               <SecondaryButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                More About Me →
+                See My Projects →
               </SecondaryButton>
+            </Link>
+            <Link to="/about" style={{ width: '100%' }}>
+              <PrimaryButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                More About Me →
+              </PrimaryButton>
             </Link>
           </CTAContainer>
         </Hero>
