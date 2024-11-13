@@ -121,10 +121,10 @@ const ButtonContainer = styled.div`
   gap: 1rem;
   width: 100%;
 `;
+
 const LiveButton = styled(motion.button)`
   background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
   color: ${props => props.theme.mode === 'dark' ? props.theme.colors.primary : props.theme.colors.secondary};
-
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -137,6 +137,9 @@ const LiveButton = styled(motion.button)`
   &:hover {
     background-color: ${props => props.theme.mode === 'dark' ? props.theme.colors.accent : props.theme.colors.white};
     color: ${props => props.theme.mode === 'dark' ? props.theme.colors.secondary : props.theme.colors.primary};
+  }
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -169,7 +172,16 @@ const Portfolio = () => {
   const [buttonTexts, setButtonTexts] = useState<{ [key: number]: string }>(
     projects.reduce((acc, _, index) => ({ ...acc, [index]: 'View Live Page →' }), {})
   );
-
+  const handleLiveClick = (project: {
+    isLive: boolean;
+    liveLink: string;
+  }, index: number) => {
+    if (project.isLive) {
+      window.open(project.liveLink, '_blank');
+    } else {
+      setButtonTexts(prev => ({ ...prev, [index]: 'Coming Soon →' }));
+    }
+  };
   return (
     <PortfolioContainer>
       <Section title="Featured Projects">
@@ -195,13 +207,16 @@ const Portfolio = () => {
                       <LiveButton
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                          if (project.isLive) {
-                            window.open(project.liveLink, '_blank');
-                          } else {
-                            setButtonTexts(prev => ({ ...prev, [index]: 'Coming Soon →' }));
-                          }
-                        }}
+                        animate={!projects[index].isLive && buttonTexts[index] === 'Coming Soon →' ? {
+                          scale: [1, 1.1, 1],
+                          color: ['#ffffff', '#f39c12', '#ffffff'],
+                          transition: { 
+                            duration: 1,
+                            repeat: Infinity,
+                            repeatType: "reverse"
+                           }
+                        } : {}}
+                        onClick={() => handleLiveClick(project, index)}
                       >
                         {buttonTexts[index]}
                       </LiveButton>
